@@ -33,7 +33,7 @@ class CalendarConverter {
 
   //Chuyển đổi số ngày Julius -> ngày tháng năm
   static List<int> jdToDate(int jd) {
-    List<int> result = new List(3);
+    List<int> result = List.generate(3, (index) => index);
     var a, b, c, d, e, m, day, month, year;
     if (jd > 2299160) {
       // After 5/10/1582, Gregorian calendar
@@ -154,10 +154,10 @@ class CalendarConverter {
 
   //Convert solar day to lunar day
   static List<int> solarToLunar(int solarYear, int solarMonth, int solarDay, Timezone timezone) {
-    List<int> result = new List(3);
+    List<int> result = List.generate(3, (index) => index);
 
     var utcValue = getTimeZoneValue(timezone);
-    var k, dayNumber, monthStart, a11, b11, lunarDay, lunarMonth, lunarYear, lunarLeap;
+    var k, dayNumber, monthStart, a11, b11, lunarDay, lunarMonth, lunarYear;
     dayNumber = jdFromDate(solarDay, solarMonth, solarYear);
     k = INT((dayNumber - 2415021.076998695) / 29.530588853);
     monthStart = getNewMoonDay(k + 1, utcValue);
@@ -175,14 +175,12 @@ class CalendarConverter {
     }
     lunarDay = dayNumber - monthStart + 1;
     var diff = INT((monthStart - a11) / 29);
-    lunarLeap = 0;
     lunarMonth = diff + 11;
     if (b11 - a11 > 365) {
       var leapMonthDiff = getLeapMonthOffset(a11, utcValue);
       if (diff >= leapMonthDiff) {
         lunarMonth = diff + 10;
         if (diff == leapMonthDiff) {
-          lunarLeap = 1;
         }
       }
     }
@@ -202,7 +200,7 @@ class CalendarConverter {
 
   //Convert lunar day to solar day
   List<int> lunarToSolar(int lunarYear,int lunarMonth, int lunarDay, int lunarLeap, Timezone timezone) {
-    List<int> result = new List(3);
+    List<int> result = List.generate(3, (index) => index);
 
     var utcValue = getTimeZoneValue(timezone);
     var k, a11, b11, off, leapOff, leapMonth, monthStart;
